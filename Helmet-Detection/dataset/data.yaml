@@ -1,5 +1,5 @@
-train: "E:/Helmet-Detection/safety_helmet/dataset/images/train"
-val: "E:/Helmet-Detection/safety_helmet/dataset/images/val"
+train: "E:/Helmet-Detection/Helmet-Detection/dataset/images/train"
+val: "E:/Helmet-Detection/Helmet-Detection/dataset/images/val"
 
 nc: 2
 names: ["helmet", "non-helmet"]
