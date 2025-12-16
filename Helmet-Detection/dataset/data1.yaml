@@ -1,0 +1,5 @@
+train: "C:/Users/soumy/OneDrive/Desktop/Helmet Detection/Helmet-Detection/Helmet-Detection/dataset/images/train"
+val: "C:/Users/soumy/OneDrive/Desktop/Helmet Detection/Helmet-Detection/Helmet-Detection/dataset/images/val"
+
+nc: 2
+names: ["helmet", "non-helmet"]
