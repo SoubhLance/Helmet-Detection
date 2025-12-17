@@ -1,32 +1,55 @@
+# YOLOv8n with CBAM attention modules
+# Corrected layer indices for skip connections
+
 nc: 2                 # number of classes (helmet, non-helmet)
 depth_multiple: 0.33  
 width_multiple: 0.25  
 
+# Backbone with CBAM attention after each C2f block
 backbone:
-  - [-1, 1, Conv, [64, 3, 2]]          
-  - [-1, 1, Conv, [128, 3, 2]]         
-  - [-1, 3, C2f, [128, True]]
-  - [-1, 1, CBAM, [128]]               
+  # Stage 1: Initial convolutions
+  - [-1, 1, Conv, [64, 3, 2]]           # 0: P1/2
+  - [-1, 1, Conv, [128, 3, 2]]          # 1: P2/4
+  
+  # Stage 2: 128 channels
+  - [-1, 3, C2f, [128, True]]           # 2
+  - [-1, 1, CBAM, [128]]                # 3: P3/8 - skip connection target for 128ch
 
-  - [-1, 1, Conv, [256, 3, 2]]         
-  - [-1, 6, C2f, [256, True]]
-  - [-1, 1, CBAM, [256]]               
+  # Stage 3: 256 channels
+  - [-1, 1, Conv, [256, 3, 2]]          # 4
+  - [-1, 6, C2f, [256, True]]           # 5
+  - [-1, 1, CBAM, [256]]                # 6: P4/16 - skip connection target for 256ch
 
-  - [-1, 1, Conv, [512, 3, 2]]         
-  - [-1, 6, C2f, [512, True]]
-  - [-1, 1, CBAM, [512]]               
+  # Stage 4: 512 channels  
+  - [-1, 1, Conv, [512, 3, 2]]          # 7
+  - [-1, 6, C2f, [512, True]]           # 8
+  - [-1, 1, CBAM, [512]]                # 9: P5/32
 
-  - [-1, 1, SPPF, [512, 5]]            
+  - [-1, 1, SPPF, [512, 5]]             # 10
 
+# Detection head with corrected skip connection indices
 head:
-  - [-1, 1, Conv, [256, 1, 1]]
-  - [-1, 1, nn.Upsample, [None, 2, nearest]]
-  - [[-1, 6], 1, Concat, [1]]
-  - [-1, 3, C2f, [256]]
+  # Upsample path 1: 512 -> 256
+  - [-1, 1, Conv, [256, 1, 1]]          # 11
+  - [-1, 1, nn.Upsample, [None, 2, nearest]]  # 12
+  - [[-1, 6], 1, Concat, [1]]           # 13: concat with layer 6 (CBAM 256ch)
+  - [-1, 3, C2f, [256]]                 # 14
 
-  - [-1, 1, Conv, [128, 1, 1]]
-  - [-1, 1, nn.Upsample, [None, 2, nearest]]
-  - [[-1, 4], 1, Concat, [1]]
-  - [-1, 3, C2f, [128]]
+  # Upsample path 2: 256 -> 128
+  - [-1, 1, Conv, [128, 1, 1]]          # 15
+  - [-1, 1, nn.Upsample, [None, 2, nearest]]  # 16
+  - [[-1, 3], 1, Concat, [1]]           # 17: concat with layer 3 (CBAM 128ch)
+  - [-1, 3, C2f, [128]]                 # 18
 
-  - [[-1, 9, 13], 1, Detect, [nc]]
+  # Downsample path 1: 128 -> 256
+  - [-1, 1, Conv, [128, 3, 2]]          # 19
+  - [[-1, 14], 1, Concat, [1]]          # 20: concat with layer 14 (C2f 256ch)
+  - [-1, 3, C2f, [256]]                 # 21
+
+  # Downsample path 2: 256 -> 512
+  - [-1, 1, Conv, [256, 3, 2]]          # 22
+  - [[-1, 10], 1, Concat, [1]]          # 23: concat with layer 10 (SPPF 512ch)
+  - [-1, 3, C2f, [512]]                 # 24
+
+  # Detect head: multiple scales
+  - [[18, 21, 24], 1, Detect, [nc]]     # 25: Detect at P3, P4, P5
