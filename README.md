@@ -49,9 +49,10 @@ pip install ultralytics torch torchvision
 ### Key Dependencies
 - Python 3.12+
 - PyTorch 2.5.1
-- CUDA 12.6 (for GPU support)
+- CUDA 13 (for GPU support)
 - Ultralytics 8.3.235
-- NVIDIA GeForce RTX 4060 Laptop GPU support
+- NVIDIA GeForce RTX 3050 Laptop GPU support (For Without CoCo Predtrained Weights)
+- NVIDIA GeForce RTX 4060 Laptop GPU support (For With CoCo Predtrained Weights)
 
 ## Model Configurations
 
