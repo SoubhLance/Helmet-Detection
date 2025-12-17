@@ -1,0 +1,18 @@
+YOLO Model Accuracy Report
+==================================================
+
+Model: C:/Users/babud/Desktop/yolo/Helmet-Detection/Helmet-Detection/runs/detect/helmet_yolov8n_cbam_scratch/weights/best.pt
+Data: data_test.yaml
+Images Tested: 24
+Total Ground Truth: 104
+Total Predictions: 88
+
+METRICS:
+------------------------------
+Precision:     0.9118 (91.2%)
+Recall:        0.5521 (55.2%)
+F1-Score:      0.6877 (68.8%)
+mAP@0.5:       0.7391 (73.9%)
+mAP@0.5:0.95:  0.3353 (33.5%)
+
+FITNESS:       0.3353 (33.5%)

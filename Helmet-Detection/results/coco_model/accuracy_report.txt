@@ -1,0 +1,18 @@
+YOLO Model Accuracy Report
+==================================================
+
+Model: best.pt
+Data: data.yaml
+Images Tested: 24
+Total Ground Truth: 104
+Total Predictions: 109
+
+METRICS:
+------------------------------
+Precision:     0.8932 (89.3%)
+Recall:        0.7969 (79.7%)
+F1-Score:      0.8423 (84.2%)
+mAP@0.5:       0.8744 (87.4%)
+mAP@0.5:0.95:  0.4067 (40.7%)
+
+FITNESS:       0.4067 (40.7%)
