@@ -99,15 +99,17 @@ from ultralytics import YOLO
 print("CBAM in tasks:", hasattr(tasks, "CBAM"))
 print("CBAM in modules:", hasattr(modules, "CBAM"))
 
-# Load the custom CBAM model architecture FROM SCRATCH (no pretrained weights)
-# Using .yaml file directly means training from scratch with random initialization
-model = YOLO("yolov8n_cbam.yaml")
 
-print("✓ Model loaded successfully (training from scratch - no pretrained weights)!")
+# Load the custom CBAM model architecture FROM SCRATCH (no pretrained weights)
+# Using the LIGHT CBAM YAML (CBAM only at P4/P5)
+model = YOLO("yolov8n_cbam_light.yaml")
+
+
+print("✓ Model loaded successfully (training from scratch - no pretrained weights, LIGHT CBAM)!")
 
 # Train the model from scratch
 model.train(
-    data=r"C:/Users/soumy/OneDrive/Desktop/Helmet Detection/Helmet-Detection/Helmet-Detection/dataset/data1.yaml",
+    data=r"C:/Users/babud/Desktop/yolo/Helmet-Detection/Helmet-Detection/dataset/data1.yaml",  # <-- update to your path
     epochs=100,
     imgsz=640,
     batch=16,
@@ -117,5 +119,5 @@ model.train(
     cos_lr=True,
     close_mosaic=10,
     pretrained=False,  # Explicitly disable pretrained weights
-    name="helmet_yolov8n_cbam_scratch"
+    name="helmet_yolov8n_cbam_light_scratch"  # updated experiment name
 )
